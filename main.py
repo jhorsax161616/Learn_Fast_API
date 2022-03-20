@@ -87,12 +87,14 @@ def show_person(
         min_length=2,
         max_length=50,
         title = "Person Name",
-        description="This is the person name. It's between 1 and 50 characters"
+        description="This is the person name. It's between 1 and 50 characters",
+        example="Ruby"
         ), #Los query parameters son opcionales y usammos min y max para restringir la entrada
     age: str = Query(
         ...,
         title="Person Age",
-        description="This is the person age. It's required"
+        description="This is the person age. It's required",
+        example=25
         )
 ):
     return {name: age}
@@ -105,7 +107,8 @@ def show_person(
         ...,
          gt=0,
          title="Person Id",
-         description="This is the person id. It's greater than 0"
+         description="This is the person id. It's greater than 0",
+         example=123
          )
 ):
     return {person_id: "It exists!"}
@@ -118,7 +121,8 @@ def update_person(
         ...,
         title="Person ID",
         description="This is the person ID",
-        gt=0
+        gt=0,
+        example=111
     ),
     person: Person = Body(...),
     location: Location = Body(...)
