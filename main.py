@@ -3,9 +3,11 @@ from operator import gt
 from typing import Dict
 from typing import Optional
 from fastapi.param_functions import Query
+from enum import Enum
 
 #Pydantic
 from pydantic import BaseModel
+from pydantic import Field
 
 #FastAPI
 from fastapi import FastAPI
@@ -18,17 +20,35 @@ app: FastAPI = FastAPI()
 
 #Models
 
+##Modelo para validar el haircolor
+class HairColor(Enum):
+    white: str = "white"
+    black: str = "black"
+    brown: str = "brown"
+    blonde: str = "blonde"
+    red: str = "red"
+
 class Location(BaseModel):
     city: str
     state: str
     country: str
 
 class Person(BaseModel):
-    first_name: str
-    last_name: str
-    age: int
-    hair_color: Optional[str] = None #Para poder asignar que la variable es opcional[tipo]
-    is_married: Optional[bool] = None # Se le pone None para q' cuando no se le pase algo le asigne NULL(BaseDatos)
+    first_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=30)
+    last_name: str = Field(
+        ...,
+        min_length=1,
+        max_length=30)
+    age: int = Field(
+        ...,
+        gt=0,
+        le=95
+    )
+    hair_color: Optional[HairColor] = Field(default=None) #Para poder asignar que la variable es opcional[tipo]
+    is_married: Optional[bool] = Field(default=None) # Se le pone None para q' cuando no se le pase algo le asigne NULL(BaseDatos)
 
     
 @app.get("/")   
@@ -90,5 +110,5 @@ def update_person(
     #Debemos fusionar como diccionarios para recibir un json con todas las respuestas
     results = person.dict()
     results.update(location.dict())
-    
+
     return results
