@@ -31,9 +31,9 @@ class HairColor(Enum):
     red: str = "red"
 
 class Location(BaseModel):
-    city: str
-    state: str
-    country: str
+    city: str = Field(default=None, example="Saipo")
+    state: str = Field(default=None, example="Junin")
+    country: str = Field(default=None, example="Peru")
 
 class Person(BaseModel):
     first_name: str = Field(
@@ -53,6 +53,19 @@ class Person(BaseModel):
     is_married: Optional[bool] = Field(default=None) # Se le pone None para q' cuando no se le pase algo le asigne NULL(BaseDatos)
     website: Optional[HttpUrl] = Field(default=None)
     number_negative: Optional[NegativeFloat]
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "first_name": "Jhordan Sax",
+                "last_name": "Cordova Poma",
+                "age" : 20,
+                "hair_color": "black",
+                "is_married": False,
+                "website": "https://sax16.github.io",
+                "number_negative": -5.6
+            }
+        }
     
 @app.get("/")   
 def home() -> Dict:
