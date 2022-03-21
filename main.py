@@ -8,6 +8,8 @@ from enum import Enum
 #Pydantic
 from pydantic import BaseModel
 from pydantic import Field
+from pydantic import HttpUrl
+from pydantic import NegativeFloat
 
 #FastAPI
 from fastapi import FastAPI
@@ -49,7 +51,8 @@ class Person(BaseModel):
     )
     hair_color: Optional[HairColor] = Field(default=None) #Para poder asignar que la variable es opcional[tipo]
     is_married: Optional[bool] = Field(default=None) # Se le pone None para q' cuando no se le pase algo le asigne NULL(BaseDatos)
-
+    website: Optional[HttpUrl] = Field(default=None)
+    number_negative: Optional[NegativeFloat]
     
 @app.get("/")   
 def home() -> Dict:
