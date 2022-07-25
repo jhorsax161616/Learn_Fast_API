@@ -24,7 +24,7 @@ def create_user(user: User):
     new_user = {"name": user.name, "email": user.email}
 
     # Se tiene que encriptar las contrasenas pero antes tenemos que cofificarlas en formatos como el utf-8
-    new_user["pasword"] = cifrado.encrypt(user.password.encode("utf-8"))
+    new_user["pasword"] = cifrado.encrypt(user.pasword.encode("utf-8"))
 
     # Guardando los datos en la base de datos
     # Si lo guardamos en una variable podria aceptar distintos metodos como el .lastrowid para que nos debuelva el id del usuario creado
@@ -56,5 +56,5 @@ def delete_user(id: str):
 @user.put("/users/{id}", response_model=User, tags=["users"])
 def update_user(id: str, user: User):
     conn.execute(users.update().values(name=user.name, email=user.email,
-                 pasword=cifrado.encrypt(user.password.encode("utf-8"))).where(users.c.id == id))
+                 pasword=cifrado.encrypt(user.pasword.encode("utf-8"))).where(users.c.id == id))
     return conn.execute(users.select().where(users.c.id == id)).first()
